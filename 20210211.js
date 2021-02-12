@@ -5,48 +5,6 @@
 여벌의 체육복을 가져온 학생들의 번호가 담긴 배열 reserve
 */
 function solution(n, lost, reserve) {
-    /*
-    체육복을 도난당했지만 여유분을 가지고 있는 학생의 경우
-    -> 체육에 참가할수 있지만 체육복을 빌려줄 수 없는 학생과 동등한 입장
-    -> lost, reserve 배열 모두에서 제거하도록 하겠습니다.
-
-    전체학생수 - 잃어버린 학생수 + 체육복을 빌린학생 수 in lost = 체육을 할 수 있는 인원 수
-     */
-    //
-    lost.forEach(el => {
-        if(reserve.includes(el)) {
-            lost = lost.filter(lostEl => el !== lostEl)
-            reserve = reserve.filter(reserveEl => el !== reserveEl)
-        }
-    })
-
-    // 체육복을 잃어버린 학생이 체육복을 빌릴 수 있는 경우는
-    // -> 자신의 번호 -1 또는 +1 한 값이 리저브 배열에 있는 경우
-    // -> 전체학생 수에 1식 더하도록 하겠습니다. 그 1은 빌린 학생수 입니다.
-    // -> 그리고 마지막에 도난당한 전체 학생 수를 빼서
-    // -> 전체학생 - 도난당한 전체 학생 수 + 빌린 학생
-    // -> 전체학생 + 빌린 학생 - 도난당한 전체학생수 
-    // -> 전체학생 - (도난당한 전체 학생수 - 빌린학생수)
-
-    lost.forEach(el => {
-        if(reserve.includes(el-1)){
-            n += 1
-            reserve = reserve.filter(reserveEl => el-1 !== reserveEl)
-        }else if(reserve.includes(el+1)){
-            n += 1
-            reserve = reserve.filter(reserveEl => el+1 !== reserveEl)
-        }
-    })
-    
-    return n - lost.length;
-}
-//--------------------------------------------------
-/*
-전체 학생의 수 n, 
-체육복을 도난당한 학생들의 번호가 담긴 배열 lost, 
-여벌의 체육복을 가져온 학생들의 번호가 담긴 배열 reserve
-*/
-function solution(n, lost, reserve) {
     //lost 와 reserve 에 모두 포함되는 학생은 제거
     //lost -> 체육복 0개, reserve -> 체육복 2개 인 인원만 남기도록 하겠습니다.
     lost.forEach(el => {
