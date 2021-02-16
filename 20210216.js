@@ -15,30 +15,32 @@ function solution(s, n) {
     sArr.forEach(el => { // 배열을 순회하면서 각 값들을 n씩 밀어내기
         
         let elCode = el.charCodeAt() // 요소의 유니코드
-        let elPlusN = elCode + n // 요소의 유니코드에 n을 더한 값 = n만큼 이동한 값
+        let elPlusN = elCode + n // 요소의 유니코드에 n을 더한 값 = n만큼 밀어낸 값
         
-        // 소문자 범주에 있는 값인 경우
+        // 소문자 범주에 있는 유니코드인 경우
         if (aCode <= elCode && elCode <= zCode) {
 
-            // n을 더한 값이 소문자 범주에서 벗어난다면
+            // n을 더한 유니코드가 소문자 범주에서 벗어난다면
             if (elPlusN > zCode) {
                 answer += String.fromCharCode(elPlusN - zCode + aCode - 1)
 
-                // n을 더한 값이 소문자 범주라면
+                // n을 더한 유니코드가 소문자 범주라면
             } else {
                 answer += String.fromCharCode(elPlusN)
             }
 
-        // 대문자 범주에 있는 값인 경우
+        // 대문자 범주에 있는 유니코드인 경우
         } else if (ACode <= elCode && elCode <= ZCode) {
             
-            // n을 더한 값이 대문자 범주에서 벗어난다면 
+            // n을 더한 유니코드가 대문자 범주에서 벗어난다면 
             if (elPlusN > 90) {
                 answer += String.fromCharCode(elPlusN - ZCode + ACode - 1)
-                // n을 더한 값이 대문자 범주라면
+                // n을 더한 유니코드가 대문자 범주라면
             } else {
                 answer += String.fromCharCode(elPlusN)
             }
+        
+        // 요소의 유니코드가 소문자/대문자 범주 밖인 경우
         } else {
             answer += ' '
         }
