@@ -7,6 +7,7 @@ function solution(s) {
             .every(el => !isNaN(el))
     }
     return false
+}
     /*
     문자열을 순회했을 때 
     통과되지 않는 테스트가 있어서 
@@ -26,7 +27,7 @@ function solution(s) {
     하지만 이 문제에서는 
     Number.isNaN 을 사용하면 통과가 안됩니다.(이유 모르겠음)
     */
-}
+
 
 /*
 문제 설명
@@ -45,6 +46,7 @@ s는 길이 1 이상, 길이 8 이하인 문자열입니다.
 
 s = a234	
 return = false
+
 s = 1234 
 return = true
 */
