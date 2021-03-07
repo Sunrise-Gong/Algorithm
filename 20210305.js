@@ -1,3 +1,4 @@
+// [Programmers] 폰켓몬
 function solution(nums) {
     let arr = []
     for (let i =0; i < nums.length; i++) {
