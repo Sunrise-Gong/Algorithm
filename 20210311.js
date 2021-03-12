@@ -3,19 +3,29 @@ function solution(priorities, location) {
     let answer = 0;
     let first;
     
-    while (priorities.length > 0) {
+    while (priorities.length > 0) { // 중요도 배열의 원소가 있을 동안
+        /* 
+        첫번째 요소를 때어내서 
+        큰 값이 있다면 -> 배열의 맨뒤로 이동
+        첫번째 요소가 가장 큰 값이라면 -> 인쇄 (answer++) 
+        */
+        first = priorities.shift(); 
         
-        first = priorities.shift();
-        
-        if (priorities.some(v => v > first)) {
+        if (priorities.some(v => v > first)) { // 첫번째 요소보다 큰 값이 뒤에 있다면
             priorities.push(first);
         } 
-        else {
+        else { // 첫번째 요소가 가장 큰 값이라면
             if (location === 0) {
                 answer++;
                 break;
             } else answer ++;
         }
+        /*
+        로케이션이 가장 첫번째 요소인데
+        로케이션이 가장 큰 값이 아니었다면 배열의 맨뒤로
+        :
+        로케이션이 가장 첫번째 요소가 아니라면 -1 (앞으로 땡기기)
+        */
         location === 0 ? (location = priorities.length - 1) : (location--)
     }
     return answer;
