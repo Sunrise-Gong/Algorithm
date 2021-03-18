@@ -1,3 +1,4 @@
+//[Programmers] 기능 개발
 function solution(progresses, speeds) {
     var answer = [];
     let day = [];
