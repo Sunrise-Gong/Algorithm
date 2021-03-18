@@ -1,32 +1,67 @@
-//[Programmers] 기능 개발
+// [Programmers] 기능개발
 function solution(progresses, speeds) {
     var answer = [];
-    
-    // '배포까지 남은 날짜' 배열로 만들기
-    let day = [];
+    let day = []; // 남은 기간 배열
+
     for (let i = 0; i < progresses.length; i++) {
-        let prog = progresses[i]; // 진행도
+        let prog = progresses[i];
         let countDay = 0;
         while (!(prog >= 100)) {
             prog += speeds[i];
             countDay++
         }
-        day.push(countDay)
+        day.push(countDay) 
     }
-    console.log(day) // 성공
-
-//'한번에 배포되는 개수' 배열 만들기
+    //console.log('day', day)
+    // 같은 날 배포되는 작업의 개수를 담은 배열 구하기
     let countDeploy = 1;
-    for (let j = 0; j < day.length; j++) {
-        if (day[j - 1] && (day[j - 1] >= day[j])) {
-            countDeploy++
-        } else if (day[j - 1] && (day[j - 1] < day[j])) {
-            answer.push(countDeploy)
+    let big = day[0];
+    for (let j = 1; j < day.length; j++) {
+        if (big < day[j]) {
+            big = day[j];
+            answer.push(countDeploy);
             countDeploy = 1;
+        } else if (big >= day[j]) {
+            countDeploy++
         }
     }
-    answer.push(countDeploy); // 제출 하면 2,3,4,5,6,7,9,10 틀림..
+    answer.push(countDeploy);
     return answer;
+}
+//------------------------------------------------------------ for 문 1번 사용
+function solution_1(progresses, speeds) {
+    var answer = [];
+    
+    let day = []; // 남은 기간 배열
+    
+    let countDeploy = 1; // 같은 날 배포되는 작업 개수
+    
+    let big = 0; //
+
+    for (let i = 0; i < progresses.length; i++) { 
+        // 각 작업마다 남은 일수를 계산
+        let prog = progresses[i];
+        let countDay = 0;
+        while (!(prog >= 100)) { 
+            prog += speeds[i];
+            countDay++;
+        }
+        day.push(countDay)
+
+        // 같은날 배포되는 작업의 개수를 파악하기 위한 조건문
+        if (big < day[i]) { 
+            big = day[i];
+            if (i) {
+                answer.push(countDeploy);
+                countDeploy = 1;
+            }
+        } else if (big >= day[i]) {
+            countDeploy++
+        }
+    }
+    answer.push(countDeploy)
+
+    return answer
 }
 
 /*
