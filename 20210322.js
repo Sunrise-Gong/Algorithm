@@ -2,8 +2,8 @@
 
 function solution(clothes) {
 
-    let countCategory = clothes.reduce((ac, cu) => {
-        return ac[cu[1]] = ac[cu[1]] ? ac[cu[1]] + 1 : 1, ac
+    let countCategory = clothes.reduce((obj, cu) => {
+        return obj[cu[1]] = obj[cu[1]] ? obj[cu[1]] + 1 : 1, obj
     }, {});
 
     let com = 1;
@@ -14,14 +14,32 @@ function solution(clothes) {
     return com - 1;
 }
 
+function solution(clothes) {
 
+    let countCategory = clothes.reduce((obj, cu) => {
+        return obj[cu[1]] = obj[cu[1]] + 1 || 1, obj
+    }, {});
+
+    let com = 1;
+
+    for (let key in countCategory) {
+        let categoryNum = countCategory[key] + 1
+        com = com * categoryNum;
+    }
+    return com - 1;
+}
+
+/*
+리듀스 메소드에서 삼항 조건 연산자 또는 or 연산자를 사용할 수 있다. 
+
+*/
 
 /*
 Object.values(객체)  ->
 <요약: 객체의 속성의 값을 배열로 리턴>
-전달된 파라미터 객체가 가지는 
-(열거 가능한) 속성의 값들로 이루어진 배열을 리턴합니다. 
-이 배열은 for...in 구문과 동일한 순서를 가집니다. 
+전달된 파라미터 객체가 가지는
+(열거 가능한) 속성의 값들로 이루어진 배열을 리턴합니다.
+이 배열은 for...in 구문과 동일한 순서를 가집니다.
 (for in 반복문은 프로토타입 체인 또한 열거한다는 점에서 차이가 있습니다.)
 */
 
