@@ -109,6 +109,11 @@ function solution(name) {
     return answer - Math.max(...arr) - 1;
 }
 
+/* substring()메소드는 
+string 객체의 시작 인덱스로 부터 
+종료 인덱스 전 까지 문자열의 부분 문자열을 반환
+*/
+
 /*
 문제 설명
 
