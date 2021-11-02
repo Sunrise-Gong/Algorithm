@@ -75,7 +75,6 @@ sizes	                                        result
 
 */
 
-// 일부 테스트 실패.. 원인이 뭘까
 function solution(sizes) {
     let sortSizes = sizes.map((e) => { return e.sort((a, b) => a - b) })
 
