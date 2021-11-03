@@ -48,7 +48,7 @@ left	right	result
 
 left 값부터 right 값까지 순회하는 for 문을 만든다.
 
-약수의 개수를 구하는 함수를 만든다.
+i 의 약수의 개수를 구한다.
 
 약수가 짝수라면 변수 answer에 더한다.
 
