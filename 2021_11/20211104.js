@@ -86,31 +86,145 @@ N	 road	                                                    K	result
 
 */
 
-
+// 접근조차 못한 나의 풀이
 function solution(N, road, K) {
     var answer = 1; // 1 자신이 포함됨
-    
+    // K 거리를 초과하는 요소들을 제거
+
+
     // 1과 직접 연결된 마을과의 거리를 K 와 비교해 answer에 카운팅한다.
     let oneDirect = [...road]
-    .filter((e) => e[0] === 1) // 1 과 연결되고
-    .filter((e) => e[2] <= K); // K 거리를 넘지 않는 도시만
-    console.log('1과 직접 연결된',oneDirect); // [ [ 1, 2, 1 ], [ 1, 3, 2 ] ]
-    
+        .filter((e) => e[0] === 1) // 1 과 연결되고
+        .filter((e) => e[2] <= K); // K 거리를 넘지 않는 도시만
+    console.log('1과 직접 연결된', oneDirect); // [ [ 1, 2, 1 ], [ 1, 3, 2 ] ]
+
     // 1 과 직접 연결되지 않은 요소를 찾는다.
     // 그요소와 연결된 다른 요소의 거리 + 다른 요소와 1과의 거리 <= K -> answer 카운팅
     let oneNotDirect = [...road]
-    .filter((e) => e[0] !== 1);
+        .filter((e) => e[0] !== 1);
     console.log('1과 직접 연결안된', oneNotDirect); // [ [ 2, 3, 2 ], [ 3, 4, 3 ], [ 3, 5, 2 ], [ 3, 5, 3 ], [ 5, 6, 1 ] ]
-    
+
 
     return answer + oneDirect.length;
 }
 
-/*
-테스트 2
-입력값 〉	6, [[1, 2, 1], [1, 3, 2], [2, 3, 2], [3, 4, 3], [3, 5, 2], [3, 5, 3], [5, 6, 1]], 4
-기댓값 〉	4
-실행 결과 〉	실행한 결괏값 3이(가) 기댓값 4와(과) 다릅니다.
+// 다른 사람 풀이
+function solution(N, road, K) {
+    /*
+    let N = 6;
+    let road = [[1,2,1],[1,3,2],[2,3,2],[3,4,3],[3,5,2],[3,5,3],[5,6,1]];
+    let K = 4;
+    */
+
+    const dist = Array(N + 1).fill(Infinity); //노드별 거리를 무한으로 하는 배열 생성 (1부터 사용하기 위해 N+1의 배열 생성) 
+    dist[1] = 0; 
+    console.log(dist); // [Infinity, 0, Infinity, Infinity, Infinity, Infinity, Infinity]
+
+    const adj = Array.from({ length: N + 1 }, () => []); // 인접한 노드별 시간(가중치)의 정보를 담고 있는 배열 생성
+    console.log(adj) // [Array(0), Array(0), Array(0), Array(0), Array(0), Array(0), Array(0)]
+
+    road.forEach(([a, b, c]) => { // 인접한 노드별 시간(가중치)의 정보를 담고 있는 배열에 데이터 추가
+        adj[a].push({ to: b, time: c });
+        adj[b].push({ to: a, time: c });
+    });
+    console.log(adj);
+    /*
+    road : [[1,2,1],[1,3,2],[2,3,2],[3,4,3],[3,5,2],[3,5,3],[5,6,1]];
+
+    adj[0] : []
+    adj[1] : [{to: 2, time: 1}, {to: 3, time: 2}]
+    adj[2] : [{to: 1, time: 1}, {to: 3, time: 2}]  
+    adj[3] : [{to: 1, time: 2}, {to: 2, time: 2}, {to: 4, time: 3}, {to: 5, time: 2}, {to: 5, time: 3}]
+    adj[4] : [{to: 3, time: 3}]
+    adj[5] : [{to: 3, time: 2}, {to: 3, time: 3}, {to: 6, time: 1}]
+    adj[6] : [{to: 5, time: 1}]
+    */
+
+    
+    const pq = [{ to: 1, time: 0 }]; // 1번 마을에서부터 우선순위 큐 시작 및 초기값 0 할당(시작점이기 때문에)
+
+    
+    while (pq.length) { // 3. 우선순위 큐 배열에 값이 없을 때까지 반복
+
+        let { to, time } = pq.pop(); // to: 3, time: 2, pq: [{to: 2, time: 1}] 
+
+    // 4.연결된 노드에서의 값이 현재의 값 + 해당 노드의 시간(가중치) 보다 클 경우, 값을 대체하고 우선순위 큐에 데이터 추가
+        adj[to].forEach(next => {
+            
+            if (dist[next.to] > dist[to] + next.time) { // 1 과 next.to 의 거리 > 1과 to의 거리 + to 와 next.to의 거리
+                dist[next.to] = dist[to] + next.time; // dist[2] : 1;
+                pq.push(next); // pq: [{to: 2, time: 1}]
+            }
+        })
+    }
+    /* console.log(pq, dist)
+    
+    pq [{ to: 1, time: 0 }]
+    dist [Infinity, 0, Infinity, Infinity, Infinity, Infinity, Infinity]
+    
+    to 1
+    next [{to: 2, time: 1}, {to: 3, time: 2}] 
+    pq [{to: 2, time: 1}, {to: 3, time: 2}]
+    dist [Infinity, 0, 1, 2, Infinity, Infinity, Infinity]
+    
+    to 3
+    next [{to: 1, time: 2}, {to: 2, time: 2}, {to: 4, time: 3}, {to: 5, time: 2}, {to: 5, time: 3}]
+    pq [{to: 2, time: 1}, {to: 4, time: 3}, {to: 5, time: 2}]
+    dist (7) [Infinity, 0, 1, 2, 5, 4, Infinity]
+    
+    to 5 
+    next [{to: 3, time: 2}, {to: 3, time: 3}, {to: 6, time: 1}]
+    pq [{to: 2, time: 1}, {to: 4, time: 3}, {to: 6, time: 1}]
+    dist [Infinity, 0, 1, 2, 5, 4, 5]
+    
+    to 6
+    next [{to: 5, time: 1}]
+    pq [{to: 2, time: 1}, {to: 4, time: 3},]
+    dist [Infinity, 0, 1, 2, 5, 4, 5]
+    
+    to 4
+    next [{to: 3, time: 3}]
+    pq [{to: 2, time: 1}]
+    dist [Infinity, 0, 1, 2, 5, 4, 5]
+    
+    to 2
+    next [{to: 1, time: 1}, {to: 3, time: 2}] 
+    pq []
+    dist [Infinity, 0, 1, 2, 5, 4, 5]
+    */
+
+    // 5.
+    return dist.filter((item) => item <= K).length;
+}
+
+// 주석제거
+// function solution(N, road, K) {
+
+//     const dist = Array(N + 1).fill(Infinity);
+//     dist[1] = 0;
+
+//     const adj = Array.from({ length: N + 1 }, () => []);
+
+//     road.forEach(([a, b, c]) => {
+//         adj[a].push({ to: b, time: c });
+//         adj[b].push({ to: a, time: c });
+//     });
+
+//     const pq = [{ to: 1, time: 0 }]; // 우선순위 큐 배열
+
+//     while (pq.length) {
+
+//         let { to, time } = pq.pop(); // 우선순위 큐의 마지막 요소 추출
+
+//         adj[to].forEach(next => { 
+//             if (dist[next.to] > dist[to] + next.time) { 
+//                 dist[next.to] = dist[to] + next.time;
+//                 pq.push(next); 
+//             }
+//         })
+//     }
+//         return dist.filter((item) => item <= K).length;
+// }
 
 
-*/
+
